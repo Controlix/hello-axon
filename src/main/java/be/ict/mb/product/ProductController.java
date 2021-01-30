@@ -25,9 +25,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> allProducts() {
-        return queryGateway.query(new FindAllProductsQuery(),
-                ResponseTypes.multipleInstancesOf(Product.class)).join();
+    public ResponseEntity<List<Product>> allProducts() {
+        return ResponseEntity.ok(queryGateway.query(new FindAllProductsQuery(),
+                ResponseTypes.multipleInstancesOf(Product.class)).join());
     }
 
     @GetMapping("{id}")
