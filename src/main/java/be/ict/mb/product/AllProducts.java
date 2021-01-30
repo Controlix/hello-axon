@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class AllProducts {
 
-    private List<Product> products = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
 
     @EventHandler
     public void on(NewProductEvent event) {
@@ -20,5 +20,10 @@ public class AllProducts {
     @QueryHandler
     public List<Product> handle(FindAllProductsQuery query) {
         return products;
+    }
+
+    @QueryHandler
+    public Product handle(FindOneProductQuery query) {
+        return products.stream().filter(p -> query.getId().equals(p.getId())).findFirst().get();
     }
 }

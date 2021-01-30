@@ -29,4 +29,10 @@ public class ProductController {
         return queryGateway.query(new FindAllProductsQuery(),
                 ResponseTypes.multipleInstancesOf(Product.class)).join();
     }
+
+    @GetMapping("{id}")
+    public Product getOne(@PathVariable("id") String id) {
+        return queryGateway.query(new FindOneProductQuery(id),
+                ResponseTypes.instanceOf(Product.class)).join();
+    }
 }
