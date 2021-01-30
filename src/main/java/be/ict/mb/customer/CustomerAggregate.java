@@ -40,6 +40,13 @@ public class CustomerAggregate {
         }
     }
 
+    @CommandHandler
+    public void handle(NotifyCustomerOfNewProduct command) {
+        if (isAlreadyInterested(command.getCategory())) {
+            AggregateLifecycle.apply(new NewProductAvailableEvent(command.getCustomerId(), command.getProductId(), command.getCategory()));
+        }
+    }
+
     @EventSourcingHandler
     public void on(NewCustomerEvent event) {
         this.id = event.getId();
