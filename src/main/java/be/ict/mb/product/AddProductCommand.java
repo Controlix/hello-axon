@@ -1,9 +1,10 @@
 package be.ict.mb.product;
 
 import lombok.Value;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Value
 public class AddProductCommand {
-    String id;
+    @TargetAggregateIdentifier String id;
     String name;
 }
