@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AllCustomers {
@@ -19,9 +20,19 @@ public class AllCustomers {
 
     @EventHandler
     public void on(CustomerInterestedInNewProductsEvent event) {
-        customers.stream().filter(c -> event.getId().equals(c.getId()))
-                .findFirst()
+        findCustomerById(event.getId())
                 .ifPresent(c -> c.addInterestedCategory(event.getCategory()));
+    }
+
+    private Optional<Customer> findCustomerById(String id) {
+        return customers.stream().filter(c -> id.equals(c.getId()))
+                .findFirst();
+    }
+
+    @EventHandler
+    public void on(CustomerNoLongerInterestedInProductsEvent event) {
+        findCustomerById(event.getId())
+                .ifPresent(c -> c.removeInterestedCategory(event.getCategory()));
     }
 
     @QueryHandler

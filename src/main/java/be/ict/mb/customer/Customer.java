@@ -15,4 +15,8 @@ public class Customer {
     public void addInterestedCategory(String category) {
         this.interestedCategories.add(category);
     }
+
+    public void removeInterestedCategory(String category) {
+        this.interestedCategories.remove(category);
+    }
 }

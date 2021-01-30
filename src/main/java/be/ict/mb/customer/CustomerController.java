@@ -30,9 +30,15 @@ public class CustomerController {
                 ResponseTypes.multipleInstancesOf(Customer.class)).join());
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Void> showInterestInProducts(@PathVariable("id") String id, @RequestBody String category) {
+    @PutMapping("{id}/{category}")
+    public ResponseEntity<Void> showInterestInProducts(@PathVariable("id") String id, @PathVariable("category") String category) {
         commandGateway.sendAndWait(new NotifyCustomerOfNewProductsCommand(id, category), 2, TimeUnit.SECONDS);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{id}/{category}")
+    public ResponseEntity<Void> ignoreProducts(@PathVariable("id") String id, @PathVariable("category") String category) {
+        commandGateway.sendAndWait(new UnsubscribeCustomerOfNewProductsCommand(id, category), 2, TimeUnit.SECONDS);
         return ResponseEntity.noContent().build();
     }
 }

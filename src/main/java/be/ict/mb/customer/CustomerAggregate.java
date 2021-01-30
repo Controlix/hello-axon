@@ -25,8 +25,19 @@ public class CustomerAggregate {
 
     @CommandHandler
     public void handle(NotifyCustomerOfNewProductsCommand command) {
-        if (this.interestedCategories.stream().anyMatch(cat -> command.getCategory().equals(cat))) return;
+        if (isAlreadyInterested(command.getCategory())) return;
         AggregateLifecycle.apply(new CustomerInterestedInNewProductsEvent(command.getId(), command.getCategory()));
+    }
+
+    private boolean isAlreadyInterested(String category) {
+        return this.interestedCategories.stream().anyMatch(cat -> category.equals(cat));
+    }
+
+    @CommandHandler
+    public void handle(UnsubscribeCustomerOfNewProductsCommand command) {
+        if (isAlreadyInterested(command.getCategory())) {
+            AggregateLifecycle.apply(new CustomerNoLongerInterestedInProductsEvent(command.getId(), command.getCategory()));
+        }
     }
 
     @EventSourcingHandler
@@ -38,5 +49,10 @@ public class CustomerAggregate {
     @EventSourcingHandler
     public void on(CustomerInterestedInNewProductsEvent event) {
         interestedCategories.add(event.getCategory());
+    }
+
+    @EventSourcingHandler
+    public void on(CustomerNoLongerInterestedInProductsEvent event) {
+        interestedCategories.remove(event.getCategory());
     }
 }
