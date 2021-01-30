@@ -29,4 +29,10 @@ public class CustomerController {
         return ResponseEntity.ok(queryGateway.query(new FindAllCustomersQuery(),
                 ResponseTypes.multipleInstancesOf(Customer.class)).join());
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Void> showInterestInProducts(@PathVariable("id") String id, @RequestBody String category) {
+        commandGateway.sendAndWait(new NotifyCustomerOfNewProductsCommand(id, category), 2, TimeUnit.SECONDS);
+        return ResponseEntity.noContent().build();
+    }
 }

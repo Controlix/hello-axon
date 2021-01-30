@@ -17,6 +17,13 @@ public class AllCustomers {
         customers.add(new Customer(event.getId(), event.getName()));
     }
 
+    @EventHandler
+    public void on(CustomerInterestedInNewProductsEvent event) {
+        customers.stream().filter(c -> event.getId().equals(c.getId()))
+                .findFirst()
+                .ifPresent(c -> c.addInterestedCategory(event.getCategory()));
+    }
+
     @QueryHandler
     public List<Customer> handle(FindAllCustomersQuery query) {
         return customers;
