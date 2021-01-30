@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AllProducts {
@@ -23,7 +24,7 @@ public class AllProducts {
     }
 
     @QueryHandler
-    public Product handle(FindOneProductQuery query) {
-        return products.stream().filter(p -> query.getId().equals(p.getId())).findFirst().get();
+    public Optional<Product> handle(FindOneProductQuery query) {
+        return products.stream().filter(p -> query.getId().equals(p.getId())).findFirst();
     }
 }

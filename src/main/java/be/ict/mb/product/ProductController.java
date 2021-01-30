@@ -31,8 +31,9 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public Product getOne(@PathVariable("id") String id) {
-        return queryGateway.query(new FindOneProductQuery(id),
-                ResponseTypes.instanceOf(Product.class)).join();
+    public ResponseEntity<Product> getOne(@PathVariable("id") String id) {
+        return ResponseEntity.of(
+                queryGateway.query(new FindOneProductQuery(id),
+                        ResponseTypes.optionalInstanceOf(Product.class)).join());
     }
 }
