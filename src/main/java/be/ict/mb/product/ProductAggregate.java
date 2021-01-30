@@ -13,16 +13,18 @@ public class ProductAggregate {
 
     @AggregateIdentifier private String id;
     private String name;
+    private String category;
 
     @CommandHandler
     public ProductAggregate(AddProductCommand command) {
         log.debug("Got command {}", command);
-        AggregateLifecycle.apply(new NewProductEvent(command.getId(), command.getName()));
+        AggregateLifecycle.apply(new NewProductEvent(command.getId(), command.getName(), command.getCategory()));
     }
 
     @EventSourcingHandler
     public void on(NewProductEvent event) {
         this.id = event.getId();
         this.name = event.getName();
+        this.category = event.getCategory();
     }
 }

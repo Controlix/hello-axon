@@ -6,4 +6,5 @@ import lombok.Value;
 public class NewProductEvent {
     String id;
     String name;
+    String category;
 }

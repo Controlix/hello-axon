@@ -15,7 +15,7 @@ public class AllProducts {
 
     @EventHandler
     public void on(NewProductEvent event) {
-        products.add(new Product(event.getId(), event.getName()));
+        products.add(new Product(event.getId(), event.getName(), event.getCategory()));
     }
 
     @QueryHandler

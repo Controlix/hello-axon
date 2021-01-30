@@ -7,4 +7,5 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 public class AddProductCommand {
     @TargetAggregateIdentifier String id;
     String name;
+    String category;
 }
